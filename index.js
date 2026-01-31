@@ -334,7 +334,7 @@ app.get("/api/business/:id", async (req, res) => {
 app.post("/api/business-detail/add",
   upload.fields([
     { name: "bannerImage", maxCount: 1 },
-    { name: "gallery", maxCount: 5 }
+    { name: "gallery", maxCount: 3 }
   ]),
   async (req, res) => {
     try {
@@ -346,14 +346,18 @@ app.post("/api/business-detail/add",
         ? req.files["gallery"].map(f => "/uploads/image/" + f.filename)
         : [];
 
+        const old = await BusinessDetail.findOne({ businessId: req.body.businessId });
+
       const data = await BusinessDetail.findOneAndUpdate(
         { businessId: req.body.businessId },
         {
           businessId: req.body.businessId,
           description: req.body.description,
           services: req.body.services ? req.body.services.split(",") : [],
-          bannerImage: banner ? "/uploads/image/" + banner : "",
-          gallery
+         bannerImage: banner
+  ? "/uploads/image/" + banner
+  : old?.bannerImage || "",
+          gallery :gallery.length > 0 ? gallery : old?.gallery || []
         },
         { upsert: true, new: true }
       );
@@ -379,15 +383,21 @@ app.get("/api/business-detail/:id", async (req, res) => {
 
     res.send({
       ...business.toObject(),
+
+      // ✅ ye fields add karo
+      bannerImage: detail?.bannerImage || "",
+      gallery: detail?.gallery || [],
+
       description: detail?.description || "",
       services: detail?.services || [],
-      images: detail?.gallery || []
+      sections: detail?.sections || []
     });
 
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
 });
+
 
 
 
