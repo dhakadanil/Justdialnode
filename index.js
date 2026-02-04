@@ -334,7 +334,7 @@ app.get("/api/business/:id", async (req, res) => {
 app.post("/api/business-detail/add",
   upload.fields([
     { name: "bannerImage", maxCount: 1 },
-    { name: "gallery", maxCount: 3 }
+    { name: "gallery", maxCount: 4 }
   ]),
   async (req, res) => {
     try {
@@ -397,7 +397,7 @@ app.get("/api/business-detail/:id", async (req, res) => {
     res.status(500).send({ error: err.message });
   }
 });
-// console.log
+
 
 
 
