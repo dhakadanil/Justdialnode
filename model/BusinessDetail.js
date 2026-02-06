@@ -14,6 +14,7 @@ const BusinessDetailSchema = new mongoose.Schema({
 
   description: String,
 
+   services: [String],
   // 🔥 Dynamic blocks (GYM / RESTAURANT / SALON / etc)
   sections: [
     {
