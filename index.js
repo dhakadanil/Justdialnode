@@ -491,19 +491,15 @@ app.get("/api/category/by-city", async (req, res) => {
       const categories = await Category.find({ status: true });
       return res.send(categories);
     }
-
     // 🔥 business se category ids
     const businesses = await Business.find({ city }).select("category");
-
     const categoryIds = [
       ...new Set(businesses.map(b => b.category?.toString()))
     ];
-
     const categories = await Category.find({
       _id: { $in: categoryIds },
       status: true
     });
-
     res.send(categories);
   } catch (err) {
     res.status(500).send([]);
