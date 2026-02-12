@@ -208,7 +208,7 @@ app.get("/api/category/:id", async (req, res) => {
   }
 });
 
-// update
+// update Category
 app.put("/api/category/update/:id", upload.single("image"), async (req, res) => {
 
   const obj = {
